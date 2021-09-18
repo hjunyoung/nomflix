@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 const HeaderContainer = styled.header`
@@ -24,6 +24,9 @@ const Item = styled.li`
   width: 80px;
   height: 50px;
   text-align: center;
+  border-bottom: 3px solid
+    ${(props) => (props.current ? '#3498db' : 'transparent')};
+  transition: border-bottom 0.5s ease-in-out;
 `;
 
 const StyledLink = styled(Link)`
@@ -33,17 +36,17 @@ const StyledLink = styled(Link)`
   height: 50px;
 `;
 
-const Header = () => {
+const Header = ({ location: { pathname } }) => {
   return (
     <HeaderContainer>
       <List>
-        <Item>
+        <Item current={pathname === '/'}>
           <StyledLink to="/">Movies</StyledLink>
         </Item>
-        <Item>
+        <Item current={pathname === '/tv'}>
           <StyledLink to="/tv">TV</StyledLink>
         </Item>
-        <Item>
+        <Item current={pathname === '/search'}>
           <StyledLink to="/search">Search</StyledLink>
         </Item>
       </List>
@@ -51,4 +54,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default withRouter(Header);
