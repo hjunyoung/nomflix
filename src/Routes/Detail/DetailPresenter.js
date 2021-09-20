@@ -59,6 +59,11 @@ const ItemContainer = styled.div`
 
 const Item = styled.span``;
 
+const Country = styled.p`
+  font-size: 20px;
+  margin-top: -5px;
+`;
+
 const Divider = styled.span`
   margin: 0 10px;
 `;
@@ -212,6 +217,18 @@ const DetailPresenter = ({
                 </Item>
                 <Divider>•</Divider>
                 <Item>
+                  <Country>
+                    {result.production_countries &&
+                      String.fromCodePoint(
+                        ...result.production_countries[0].iso_3166_1
+                          .toUpperCase()
+                          .split('')
+                          .map((char) => 127397 + char.charCodeAt())
+                      )}
+                  </Country>
+                </Item>
+                <Divider>•</Divider>
+                <Item>
                   {result.genres?.map((genre) => genre.name).join(' / ')}
                 </Item>
                 {result.imdb_id && (
@@ -234,6 +251,7 @@ const DetailPresenter = ({
                   </>
                 )}
               </ItemContainer>
+
               <Overview>{result.overview || ''}</Overview>
 
               <MoreInfo>
