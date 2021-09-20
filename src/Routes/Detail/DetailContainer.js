@@ -13,8 +13,15 @@ class DetailContainer extends React.Component {
       error: null,
       loading: true,
       isMovie: pathname.includes('/movie/'),
+      trailerView: false,
     };
   }
+
+  toggleTrailer = () => {
+    this.setState((prevState) => ({
+      trailerView: !prevState.trailerView,
+    }));
+  };
 
   async componentDidMount() {
     const {
@@ -37,7 +44,6 @@ class DetailContainer extends React.Component {
       } else {
         ({ data: result } = await tvApi.showDetail(parsedId));
       }
-      console.log(result);
     } catch {
       this.setState({ error: "Can't find anything." });
     } finally {
@@ -46,8 +52,16 @@ class DetailContainer extends React.Component {
   }
 
   render() {
-    const { result, error, loading } = this.state;
-    return <DetailPresenter result={result} error={error} loading={loading} />;
+    const { result, error, loading, trailerView } = this.state;
+    return (
+      <DetailPresenter
+        result={result}
+        error={error}
+        loading={loading}
+        trailerView={trailerView}
+        toggleTrailer={this.toggleTrailer}
+      />
+    );
   }
 }
 

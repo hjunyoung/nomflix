@@ -103,7 +103,51 @@ const ImdbLink = styled.a`
   }
 `;
 
-const DetailPresenter = ({ result, error, loading }) => {
+const MoreInfo = styled.div`
+  margin-top: 20px;
+`;
+
+const TrailerContainer = styled.div``;
+
+const Trailers = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+`;
+
+const Trailer = styled.div`
+  height: ${(props) => (props.trailerView ? '153px' : 0)};
+  width: 272px;
+  transition: height 0.05s linear;
+
+  img {
+    height: ${(props) => (props.trailerView ? '100%' : 0)};
+  }
+`;
+
+const TrailerHeader = styled.div`
+  user-select: none;
+  display: inline-flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  h5 {
+    font-size: 16px;
+  }
+
+  span {
+    transform: ${(props) => props.trailerView && 'rotate(90deg)'};
+  }
+`;
+
+const DetailPresenter = ({
+  result,
+  error,
+  loading,
+  trailerView,
+  toggleTrailer,
+}) => {
   return loading ? (
     <>
       <Helmet>
@@ -178,6 +222,36 @@ const DetailPresenter = ({ result, error, loading }) => {
                 )}
               </ItemContainer>
               <Overview>{result.overview || ''}</Overview>
+
+              <MoreInfo>
+                <TrailerContainer>
+                  <TrailerHeader
+                    onClick={toggleTrailer}
+                    trailerView={trailerView}
+                  >
+                    <span>▶</span>
+                    <h5>Trailers</h5>
+                  </TrailerHeader>
+                  <Trailers>
+                    {result.videos &&
+                      result.videos.results.length > 0 &&
+                      result.videos.results.map((video) => (
+                        <Trailer key={video.key} trailerView={trailerView}>
+                          <a
+                            href={`https://www.youtube.com/watch?v=${video.key}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <img
+                              src={`https://img.youtube.com/vi/${video.key}/mqdefault.jpg`}
+                              alt="Trailer thumbnail"
+                            />
+                          </a>
+                        </Trailer>
+                      ))}
+                  </Trailers>
+                </TrailerContainer>
+              </MoreInfo>
             </Data>
           </Content>
         </>
