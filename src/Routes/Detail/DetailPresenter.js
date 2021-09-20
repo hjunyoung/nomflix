@@ -141,6 +141,19 @@ const TrailerHeader = styled.div`
   }
 `;
 
+const Companies = styled.div`
+  position: absolute;
+  top: 30px;
+  right: 30px;
+
+  img {
+    height: 40px;
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+`;
+
 const DetailPresenter = ({
   result,
   error,
@@ -256,6 +269,21 @@ const DetailPresenter = ({
           </Content>
         </>
       )}
+
+      <Companies>
+        {result.production_companies &&
+          result.production_companies.map(
+            (company) =>
+              company.logo_path && (
+                <img
+                  alt={`${company.name}`}
+                  key={company.id}
+                  src={`https://image.tmdb.org/t/p/w500${company.logo_path}`}
+                  title={company.name}
+                />
+              )
+          )}
+      </Companies>
     </Container>
   );
 };
