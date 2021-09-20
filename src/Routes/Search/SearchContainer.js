@@ -34,11 +34,19 @@ class SearchContainer extends React.Component {
     }
   };
 
-  handleSubmit = () => {
+  handleSubmit = (event) => {
+    event.preventDefault();
     const { searchTerm } = this.state;
     if (searchTerm) {
       this.searchByTerm();
     }
+  };
+
+  handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    this.setState({ searchTerm: value });
   };
 
   render() {
@@ -51,6 +59,7 @@ class SearchContainer extends React.Component {
         error={error}
         loading={loading}
         handleSubmit={this.handleSubmit}
+        handleChange={this.handleChange}
       />
     );
   }
