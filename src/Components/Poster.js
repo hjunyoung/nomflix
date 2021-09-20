@@ -52,7 +52,7 @@ const ImageContainer = styled.div`
 
 const Poster = ({ id, imageUrl, title, rating, year, isMovie = false }) => {
   return (
-    <Link to={isMovie ? `/movie/${id}` : `/show/${id}`}>
+    <Link to={isMovie ? `/movie/${id}` : `/tv/${id}`}>
       <Container>
         <ImageContainer>
           <Image
