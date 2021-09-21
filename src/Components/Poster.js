@@ -41,6 +41,9 @@ const ImageContainer = styled.div`
   margin-bottom: 5px;
   position: relative;
   &:hover {
+    top: -5px;
+    -webkit-box-shadow: 8px 34px 50px -3px rgba(0, 0, 0, 0.78);
+    box-shadow: 8px 34px 50px -3px rgba(0, 0, 0, 0.78);
     ${Image} {
       filter: brightness(0.4);
     }
