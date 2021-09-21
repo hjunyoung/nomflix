@@ -20,7 +20,7 @@ const Rating = styled.span`
   right: 5px;
   position: absolute;
   opacity: 0;
-  transition: opacity 0.15s linear;
+  transition: filter 0.15s linear;
 `;
 
 const Title = styled.span`
@@ -42,7 +42,7 @@ const ImageContainer = styled.div`
   position: relative;
   &:hover {
     ${Image} {
-      opacity: 0.3;
+      filter: brightness(0.4);
     }
     ${Rating} {
       opacity: 1;
