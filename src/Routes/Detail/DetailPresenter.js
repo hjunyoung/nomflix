@@ -13,7 +13,7 @@ const Container = styled.div`
 `;
 
 const Backdrop = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -112,26 +112,66 @@ const MoreInfo = styled.div`
   margin-top: 20px;
 `;
 
-const TrailerContainer = styled.div``;
+const ContainerStyle = styled.div`
+  margin-bottom: 10px;
+`;
 
-const Trailers = styled.div`
+const TrailerContainer = styled(ContainerStyle)``;
+
+const Grid = styled.div`
   width: 100%;
   display: flex;
-  gap: 5px;
   flex-wrap: wrap;
 `;
+
+const Trailers = styled(Grid)`
+  position: relative;
+  gap: ${(props) => (props.trailerView ? '5px' : 0)};
+`;
+
+const Name = styled.span`
+  user-select: none;
+  font-size: 0;
+  font-weight: 600;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+`;
+
+const TrailerName = styled(Name)``;
 
 const Trailer = styled.div`
   height: ${(props) => (props.trailerView ? '153px' : 0)};
   width: 272px;
-  transition: height 0.05s linear;
+  border-radius: 5px;
+  padding: 0 40px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 
-  img {
-    height: ${(props) => (props.trailerView ? '100%' : 0)};
+  background-image: url(${(props) => props.bgUrl});
+  background-position: center;
+  background-size: cover;
+  transition: height 0.05s linear, filter 0.15s linear;
+`;
+
+const TrailerContent = styled.div`
+  position: relative;
+  text-align: center;
+
+  &:hover {
+    ${Trailer} {
+      filter: brightness(0.4);
+    }
+    ${TrailerName} {
+      font-size: ${(props) => (props.trailerView ? '16px' : 0)};
+    }
   }
 `;
 
-const TrailerHeader = styled.div`
+const Header = styled.div`
   user-select: none;
   display: inline-flex;
   gap: 10px;
@@ -140,7 +180,9 @@ const TrailerHeader = styled.div`
   h5 {
     font-size: 16px;
   }
+`;
 
+const TrailerHeader = styled(Header)`
   span {
     transform: ${(props) => props.trailerView && 'rotate(90deg)'};
   }
@@ -164,7 +206,7 @@ const DetailPresenter = ({
   error,
   loading,
   trailerView,
-  toggleTrailer,
+  toggleView,
 }) => {
   return loading ? (
     <>
@@ -256,29 +298,30 @@ const DetailPresenter = ({
 
               <MoreInfo>
                 <TrailerContainer>
-                  <TrailerHeader
-                    onClick={toggleTrailer}
-                    trailerView={trailerView}
-                  >
+                  <TrailerHeader onClick={toggleView} trailerView={trailerView}>
                     <span>▶</span>
                     <h5>Trailers</h5>
                   </TrailerHeader>
-                  <Trailers>
+                  <Trailers trailerView={trailerView}>
                     {result.videos &&
                       result.videos.results.length > 0 &&
                       result.videos.results.map((video) => (
-                        <Trailer key={video.key} trailerView={trailerView}>
+                        <TrailerContent
+                          key={video.id}
+                          trailerView={trailerView}
+                        >
                           <a
                             href={`https://www.youtube.com/watch?v=${video.key}`}
                             target="_blank"
                             rel="noreferrer"
                           >
-                            <img
-                              src={`https://img.youtube.com/vi/${video.key}/mqdefault.jpg`}
-                              alt="Trailer thumbnail"
-                            />
+                            <Trailer
+                              trailerView={trailerView}
+                              bgUrl={`https://img.youtube.com/vi/${video.key}/mqdefault.jpg`}
+                            ></Trailer>
                           </a>
-                        </Trailer>
+                          <TrailerName>{video.name}</TrailerName>
+                        </TrailerContent>
                       ))}
                   </Trailers>
                 </TrailerContainer>
