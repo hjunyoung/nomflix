@@ -266,6 +266,43 @@ const SeasonContent = styled(TrailerContent)`
   }
 `;
 
+const CreatorContainer = styled(ContainerStyle)`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`;
+
+const CreatorHeader = styled(Header)`
+  span {
+    transform: ${(props) => props.creatorView && 'rotate(90deg)'};
+  }
+`;
+
+const Creators = styled(Grid)`
+  position: relative;
+  gap: ${(props) => (props.creatorView ? '5px' : 0)};
+`;
+
+const CreatorImage = styled.div`
+  height: ${(props) => (props.creatorView ? '300px' : 0)};
+  width: 200px;
+  transition: height 0.05s linear;
+  border-radius: 5px;
+
+  background-image: url(${(props) => props.bgUrl});
+  background-position: center;
+  background-size: cover;
+  margin-bottom: 10px;
+`;
+
+const CreatorName = styled.span`
+  font-size: ${(props) => (props.creatorView ? '14px' : 0)};
+`;
+
+const CreatorContent = styled.div`
+  text-align: center;
+`;
+
 const Companies = styled.div`
   position: absolute;
   top: 30px;
@@ -287,6 +324,7 @@ const DetailPresenter = ({
   toggleView,
   collectionView,
   seasonView,
+  creatorView,
 }) => {
   return loading ? (
     <>
@@ -453,6 +491,36 @@ const DetailPresenter = ({
                         ))}
                     </Seasons>
                   </SeasonContainer>
+                )}
+
+                {result.created_by?.length > 0 && (
+                  <CreatorContainer>
+                    <CreatorHeader
+                      onClick={toggleView}
+                      creatorView={creatorView}
+                    >
+                      <span>▶</span>
+                      <h5>Creators</h5>
+                    </CreatorHeader>
+                    <Creators creatorView={creatorView}>
+                      {result.created_by?.length > 0 &&
+                        result.created_by.map((creator) => (
+                          <CreatorContent key={creator.id}>
+                            <CreatorImage
+                              creatorView={creatorView}
+                              bgUrl={
+                                creator.profile_path
+                                  ? `https://image.tmdb.org/t/p/w500${creator.profile_path}`
+                                  : require('../../assets/noPoster.png').default
+                              }
+                            />
+                            <CreatorName creatorView={creatorView}>
+                              {creator.name}
+                            </CreatorName>
+                          </CreatorContent>
+                        ))}
+                    </Creators>
+                  </CreatorContainer>
                 )}
               </MoreInfo>
             </Data>
