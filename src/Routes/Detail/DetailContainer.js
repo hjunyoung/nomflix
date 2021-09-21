@@ -16,33 +16,43 @@ class DetailContainer extends React.Component {
       trailerView: false,
       collectionView: false,
       seasonView: false,
+      creatorView: false,
     };
   }
 
   toggleView = (event) => {
-    const {
-      target: { innerText: view },
-    } = event;
+    const { innerText: view } = event.target;
 
-    if (view === 'Trailers') {
+    if (view.includes('Trailers')) {
       return this.setState((prevState) => ({
         trailerView: !prevState.trailerView,
         collectionView: false,
         seasonView: false,
+        creatorView: false,
       }));
     }
-    if (view === 'Collection') {
+    if (view.includes('Collection')) {
       return this.setState((prevState) => ({
         trailerView: false,
         collectionView: !prevState.collectionView,
         seasonView: false,
+        creatorView: false,
       }));
     }
-    if (view === 'Seasons') {
+    if (view.includes('Seasons')) {
       return this.setState((prevState) => ({
         trailerView: false,
         collectionView: false,
         seasonView: !prevState.seasonView,
+        creatorView: false,
+      }));
+    }
+    if (view.includes('Creators')) {
+      return this.setState((prevState) => ({
+        trailerView: false,
+        collectionView: false,
+        seasonView: false,
+        creatorView: !prevState.creatorView,
       }));
     }
   };
@@ -76,8 +86,15 @@ class DetailContainer extends React.Component {
   }
 
   render() {
-    const { result, error, loading, trailerView, collectionView, seasonView } =
-      this.state;
+    const {
+      result,
+      error,
+      loading,
+      trailerView,
+      collectionView,
+      seasonView,
+      creatorView,
+    } = this.state;
     return (
       <DetailPresenter
         result={result}
@@ -86,6 +103,7 @@ class DetailContainer extends React.Component {
         trailerView={trailerView}
         collectionView={collectionView}
         seasonView={seasonView}
+        creatorView={creatorView}
         toggleView={this.toggleView}
       />
     );
