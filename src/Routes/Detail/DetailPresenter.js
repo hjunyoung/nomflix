@@ -385,18 +385,21 @@ const DetailPresenter = ({
                   {result.runtime || result.episode_run_time?.[0]} mins
                 </Item>
                 <Divider>•</Divider>
-                <Item>
-                  <Country>
-                    {result.production_countries &&
-                      String.fromCodePoint(
-                        ...result.production_countries[0].iso_3166_1
-                          .toUpperCase()
-                          .split('')
-                          .map((char) => 127397 + char.charCodeAt())
-                      )}
-                  </Country>
-                </Item>
-                <Divider>•</Divider>
+                {result.production_countries?.[0]?.iso_3166_1 && (
+                  <>
+                    <Item>
+                      <Country>
+                        {String.fromCodePoint(
+                          ...result.production_countries[0].iso_3166_1
+                            .toUpperCase()
+                            .split('')
+                            .map((char) => 127397 + char.charCodeAt())
+                        )}
+                      </Country>
+                    </Item>
+                    <Divider>•</Divider>
+                  </>
+                )}
                 <Item>
                   {result.genres?.map((genre) => genre.name).join(' / ')}
                 </Item>
@@ -424,34 +427,39 @@ const DetailPresenter = ({
               <Overview>{result.overview || ''}</Overview>
 
               <MoreInfo>
-                <TrailerContainer>
-                  <TrailerHeader onClick={toggleView} trailerView={trailerView}>
-                    <span>▶</span>
-                    <h5>Trailers</h5>
-                  </TrailerHeader>
-                  <Trailers trailerView={trailerView}>
-                    {result.videos &&
-                      result.videos.results.length > 0 &&
-                      result.videos.results.map((video) => (
-                        <TrailerContent
-                          key={video.id}
-                          trailerView={trailerView}
-                        >
-                          <a
-                            href={`https://www.youtube.com/watch?v=${video.key}`}
-                            target="_blank"
-                            rel="noreferrer"
+                {result.videos?.results?.length > 0 && (
+                  <TrailerContainer>
+                    <TrailerHeader
+                      onClick={toggleView}
+                      trailerView={trailerView}
+                    >
+                      <span>▶</span>
+                      <h5>Trailers</h5>
+                    </TrailerHeader>
+                    <Trailers trailerView={trailerView}>
+                      {result.videos &&
+                        result.videos.results.length > 0 &&
+                        result.videos.results.map((video) => (
+                          <TrailerContent
+                            key={video.id}
+                            trailerView={trailerView}
                           >
-                            <Trailer
-                              trailerView={trailerView}
-                              bgUrl={`https://img.youtube.com/vi/${video.key}/mqdefault.jpg`}
-                            ></Trailer>
-                          </a>
-                          <TrailerName>{video.name}</TrailerName>
-                        </TrailerContent>
-                      ))}
-                  </Trailers>
-                </TrailerContainer>
+                            <a
+                              href={`https://www.youtube.com/watch?v=${video.key}`}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <Trailer
+                                trailerView={trailerView}
+                                bgUrl={`https://img.youtube.com/vi/${video.key}/mqdefault.jpg`}
+                              ></Trailer>
+                            </a>
+                            <TrailerName>{video.name}</TrailerName>
+                          </TrailerContent>
+                        ))}
+                    </Trailers>
+                  </TrailerContainer>
+                )}
 
                 {result.belongs_to_collection && (
                   <CollectionContainer>
@@ -465,7 +473,11 @@ const DetailPresenter = ({
 
                     <Collection
                       collectionView={collectionView}
-                      bgUrl={`https://image.tmdb.org/t/p/w500${result.belongs_to_collection.poster_path}`}
+                      bgUrl={
+                        result.belongs_to_collection.poster_path
+                          ? `https://image.tmdb.org/t/p/w500${result.belongs_to_collection.poster_path}`
+                          : require('../../assets/noPoster.png').default
+                      }
                       aria-label={`${result.belongs_to_collection.name}`}
                     ></Collection>
                     <CollectionName>
@@ -474,7 +486,7 @@ const DetailPresenter = ({
                   </CollectionContainer>
                 )}
 
-                {result.seasons && (
+                {result.seasons?.length > 0 && (
                   <SeasonContainer>
                     <SeasonHeader onClick={toggleView} seasonView={seasonView}>
                       <span>▶</span>
@@ -483,8 +495,11 @@ const DetailPresenter = ({
                     <Seasons seasonView={seasonView}>
                       {result.seasons?.length > 0 &&
                         result.seasons.map((season) => (
-                          <SeasonContent seasonView={seasonView}>
-                            <Season key={season.id} seasonView={seasonView}>
+                          <SeasonContent
+                            key={season.id}
+                            seasonView={seasonView}
+                          >
+                            <Season seasonView={seasonView}>
                               <img
                                 src={
                                   season.poster_path
