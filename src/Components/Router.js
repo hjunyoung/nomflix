@@ -10,6 +10,7 @@ import Home from 'Routes/Home';
 import TV from 'Routes/TV';
 import Search from 'Routes/Search';
 import Detail from 'Routes/Detail';
+import Collection from 'Routes/Collection';
 
 const RouterComponent = () => {
   return (
@@ -21,6 +22,7 @@ const RouterComponent = () => {
         <Route path="/search" component={Search} exact />
         <Route path="/movie/:id" component={Detail} exact />
         <Route path="/tv/:id" component={Detail} exact />
+        <Route path="/collection/:id" component={Collection} exact />
         <Redirect from="*" to="/" />
       </Switch>
     </Router>
