@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
@@ -201,7 +202,7 @@ const CollectionContainer = styled(ContainerStyle)``;
 
 const CollectionHeader = styled(Header)`
   span {
-    transform: ${(props) => props.collectionView && 'rotate(90deg)'};
+    transform: ${(props) => props.collectionview && 'rotate(90deg)'};
   }
 `;
 
@@ -217,7 +218,7 @@ const CollectionName = styled(Name)`
 `;
 
 const Collection = styled.div`
-  height: ${(props) => (props.collectionView ? '300px' : 0)};
+  height: ${(props) => (props.collectionview ? '300px' : 0)};
   width: 200px;
   transition: height 0.05s linear;
   border-radius: 5px;
@@ -225,15 +226,21 @@ const Collection = styled.div`
   background-image: url(${(props) => props.bgUrl});
   background-position: center;
   background-size: cover;
+  cursor: pointer;
+`;
 
+const CollectionContent = styled(Link)`
+  display: block;
+  width: 200px;
   &:hover {
-    filter: brightness(0.4);
-
-    & + ${CollectionName} {
-      font-size: ${(props) => (props.collectionView ? '200px' : 0)};
-      transform: translate(-10%, calc(45vh - 100%));
-      opacity: 0.25;
+    ${Collection} {
+      filter: brightness(0.4);
     }
+  }
+  &:hover + ${CollectionName} {
+    font-size: ${(props) => (props.collectionview ? '200px' : 0)};
+    transform: translate(-10%, calc(45vh - 100%));
+    opacity: 0.25;
   }
 `;
 
@@ -331,7 +338,7 @@ const DetailPresenter = ({
   loading,
   trailerView,
   toggleView,
-  collectionView,
+  collectionview,
   seasonView,
   creatorView,
 }) => {
@@ -347,7 +354,7 @@ const DetailPresenter = ({
       {error ? (
         <>
           <Helmet>
-            <title>Not fount | Nomflix</title>
+            <title>Not found | Nomflix</title>
           </Helmet>
           <Message color="#e74c3c" text={error} />
         </>
@@ -465,21 +472,25 @@ const DetailPresenter = ({
                   <CollectionContainer>
                     <CollectionHeader
                       onClick={toggleView}
-                      collectionView={collectionView}
+                      collectionview={collectionview}
                     >
                       <span>▶</span>
                       <h5>Collection</h5>
                     </CollectionHeader>
-
-                    <Collection
-                      collectionView={collectionView}
-                      bgUrl={
-                        result.belongs_to_collection.poster_path
-                          ? `https://image.tmdb.org/t/p/w500${result.belongs_to_collection.poster_path}`
-                          : require('../../assets/noPoster.png').default
-                      }
-                      aria-label={`${result.belongs_to_collection.name}`}
-                    ></Collection>
+                    <CollectionContent
+                      to={`/collection/${result.belongs_to_collection.id}`}
+                      collectionview={collectionview}
+                    >
+                      <Collection
+                        collectionview={collectionview}
+                        bgUrl={
+                          result.belongs_to_collection.poster_path
+                            ? `https://image.tmdb.org/t/p/w500${result.belongs_to_collection.poster_path}`
+                            : require('../../assets/noPoster.png').default
+                        }
+                        aria-label={`${result.belongs_to_collection.name}`}
+                      ></Collection>
+                    </CollectionContent>
                     <CollectionName>
                       {result.belongs_to_collection.name}
                     </CollectionName>
@@ -574,6 +585,11 @@ DetailPresenter.propTypes = {
   result: PropTypes.object,
   error: PropTypes.string,
   loading: PropTypes.bool.isRequired,
+  toggleView: PropTypes.func.isRequired,
+  trailerView: PropTypes.bool.isRequired,
+  collectionview: PropTypes.bool.isRequired,
+  seasonView: PropTypes.bool.isRequired,
+  creatorView: PropTypes.bool.isRequired,
 };
 
 export default DetailPresenter;

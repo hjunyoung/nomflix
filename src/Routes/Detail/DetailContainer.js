@@ -14,7 +14,7 @@ class DetailContainer extends React.Component {
       loading: true,
       isMovie: pathname.includes('/movie/'),
       trailerView: false,
-      collectionView: false,
+      collectionview: false,
       seasonView: false,
       creatorView: false,
     };
@@ -26,7 +26,7 @@ class DetailContainer extends React.Component {
     if (view.includes('Trailers')) {
       return this.setState((prevState) => ({
         trailerView: !prevState.trailerView,
-        collectionView: false,
+        collectionview: false,
         seasonView: false,
         creatorView: false,
       }));
@@ -34,7 +34,7 @@ class DetailContainer extends React.Component {
     if (view.includes('Collection')) {
       return this.setState((prevState) => ({
         trailerView: false,
-        collectionView: !prevState.collectionView,
+        collectionview: !prevState.collectionview,
         seasonView: false,
         creatorView: false,
       }));
@@ -42,7 +42,7 @@ class DetailContainer extends React.Component {
     if (view.includes('Seasons')) {
       return this.setState((prevState) => ({
         trailerView: false,
-        collectionView: false,
+        collectionview: false,
         seasonView: !prevState.seasonView,
         creatorView: false,
       }));
@@ -50,7 +50,7 @@ class DetailContainer extends React.Component {
     if (view.includes('Creators')) {
       return this.setState((prevState) => ({
         trailerView: false,
-        collectionView: false,
+        collectionview: false,
         seasonView: false,
         creatorView: !prevState.creatorView,
       }));
@@ -91,7 +91,7 @@ class DetailContainer extends React.Component {
       error,
       loading,
       trailerView,
-      collectionView,
+      collectionview,
       seasonView,
       creatorView,
     } = this.state;
@@ -101,7 +101,7 @@ class DetailContainer extends React.Component {
         error={error}
         loading={loading}
         trailerView={trailerView}
-        collectionView={collectionView}
+        collectionview={collectionview}
         seasonView={seasonView}
         creatorView={creatorView}
         toggleView={this.toggleView}
