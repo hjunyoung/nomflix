@@ -59,3 +59,9 @@ export const moviesApi = {
     });
   },
 };
+
+export const collectionsApi = {
+  collectionDetail(id) {
+    return api.get(`collection/${id}`);
+  },
+};
