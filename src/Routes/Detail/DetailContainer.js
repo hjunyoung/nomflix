@@ -14,13 +14,37 @@ class DetailContainer extends React.Component {
       loading: true,
       isMovie: pathname.includes('/movie/'),
       trailerView: false,
+      collectionView: false,
+      seasonView: false,
     };
   }
 
-  toggleTrailer = () => {
-    this.setState((prevState) => ({
-      trailerView: !prevState.trailerView,
-    }));
+  toggleView = (event) => {
+    const {
+      target: { innerText: view },
+    } = event;
+
+    if (view === 'Trailers') {
+      return this.setState((prevState) => ({
+        trailerView: !prevState.trailerView,
+        collectionView: false,
+        seasonView: false,
+      }));
+    }
+    if (view === 'Collection') {
+      return this.setState((prevState) => ({
+        trailerView: false,
+        collectionView: !prevState.collectionView,
+        seasonView: false,
+      }));
+    }
+    if (view === 'Seasons') {
+      return this.setState((prevState) => ({
+        trailerView: false,
+        collectionView: false,
+        seasonView: !prevState.seasonView,
+      }));
+    }
   };
 
   async componentDidMount() {
@@ -52,14 +76,17 @@ class DetailContainer extends React.Component {
   }
 
   render() {
-    const { result, error, loading, trailerView } = this.state;
+    const { result, error, loading, trailerView, collectionView, seasonView } =
+      this.state;
     return (
       <DetailPresenter
         result={result}
         error={error}
         loading={loading}
         trailerView={trailerView}
-        toggleTrailer={this.toggleTrailer}
+        collectionView={collectionView}
+        seasonView={seasonView}
+        toggleView={this.toggleView}
       />
     );
   }
