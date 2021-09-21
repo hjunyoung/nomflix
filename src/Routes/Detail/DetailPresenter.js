@@ -39,6 +39,12 @@ const Cover = styled.div`
   background-position: center;
   background-size: cover;
   border-radius: 5px;
+  position: relative;
+  &:hover {
+    top: -10px;
+    -webkit-box-shadow: 8px 34px 50px -3px rgba(0, 0, 0, 0.78);
+    box-shadow: 8px 34px 50px -3px rgba(0, 0, 0, 0.78);
+  }
 `;
 
 const Data = styled.div`
@@ -180,6 +186,9 @@ const Header = styled.div`
   h5 {
     font-size: 16px;
   }
+  * {
+    pointer-events: none;
+  }
 `;
 
 const TrailerHeader = styled(Header)`
@@ -198,7 +207,7 @@ const CollectionHeader = styled(Header)`
 
 const CollectionName = styled(Name)`
   position: fixed;
-  transform: translate(-100vw, -50vh);
+  transform: translate(-100vw, -70vh);
   opacity: 0;
   font-style: italic;
   pointer-events: none;
@@ -222,7 +231,7 @@ const Collection = styled.div`
 
     & + ${CollectionName} {
       font-size: ${(props) => (props.collectionView ? '200px' : 0)};
-      transform: translate(-10%, -30%);
+      transform: translate(-10%, calc(45vh - 100%));
       opacity: 0.25;
     }
   }
