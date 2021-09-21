@@ -188,6 +188,84 @@ const TrailerHeader = styled(Header)`
   }
 `;
 
+const CollectionContainer = styled(ContainerStyle)``;
+
+const CollectionHeader = styled(Header)`
+  span {
+    transform: ${(props) => props.collectionView && 'rotate(90deg)'};
+  }
+`;
+
+const CollectionName = styled(Name)`
+  position: fixed;
+  transform: translate(-100vw, -50vh);
+  opacity: 0;
+  font-style: italic;
+  pointer-events: none;
+  text-align: right;
+
+  transition: transform 0.2s ease-in-out, opacity 0.2s linear;
+`;
+
+const Collection = styled.div`
+  height: ${(props) => (props.collectionView ? '300px' : 0)};
+  width: 200px;
+  transition: height 0.05s linear;
+  border-radius: 5px;
+
+  background-image: url(${(props) => props.bgUrl});
+  background-position: center;
+  background-size: cover;
+
+  &:hover {
+    filter: brightness(0.4);
+
+    & + ${CollectionName} {
+      font-size: ${(props) => (props.collectionView ? '200px' : 0)};
+      transform: translate(-10%, -30%);
+      opacity: 0.25;
+    }
+  }
+`;
+
+const SeasonContainer = styled(ContainerStyle)``;
+
+const SeasonHeader = styled(Header)`
+  span {
+    transform: ${(props) => props.seasonView && 'rotate(90deg)'};
+  }
+`;
+
+const Seasons = styled(Grid)`
+  gap: ${(props) => (props.seasonView ? '5px' : 0)};
+`;
+
+const SeasonName = styled(Name)``;
+
+const Season = styled.div`
+  height: ${(props) => (props.seasonView ? '272px' : 0)};
+  transition: height 0.05s linear;
+  width: 181px;
+
+  img {
+    width: 181px;
+
+    border-radius: 5px;
+    height: ${(props) => (props.seasonView ? '100%' : 0)};
+  }
+`;
+
+const SeasonContent = styled(TrailerContent)`
+  &:hover {
+    ${Season} {
+      filter: brightness(0.4);
+    }
+    ${SeasonName} {
+      font-size: ${(props) => (props.seasonView ? '16px' : 0)};
+    }
+  }
+`;
+
 const Companies = styled.div`
   position: absolute;
   top: 30px;
@@ -207,6 +285,8 @@ const DetailPresenter = ({
   loading,
   trailerView,
   toggleView,
+  collectionView,
+  seasonView,
 }) => {
   return loading ? (
     <>
@@ -325,6 +405,55 @@ const DetailPresenter = ({
                       ))}
                   </Trailers>
                 </TrailerContainer>
+
+                {result.belongs_to_collection && (
+                  <CollectionContainer>
+                    <CollectionHeader
+                      onClick={toggleView}
+                      collectionView={collectionView}
+                    >
+                      <span>▶</span>
+                      <h5>Collection</h5>
+                    </CollectionHeader>
+
+                    <Collection
+                      collectionView={collectionView}
+                      bgUrl={`https://image.tmdb.org/t/p/w500${result.belongs_to_collection.poster_path}`}
+                      aria-label={`${result.belongs_to_collection.name}`}
+                    ></Collection>
+                    <CollectionName>
+                      {result.belongs_to_collection.name}
+                    </CollectionName>
+                  </CollectionContainer>
+                )}
+
+                {result.seasons && (
+                  <SeasonContainer>
+                    <SeasonHeader onClick={toggleView} seasonView={seasonView}>
+                      <span>▶</span>
+                      <h5>Seasons</h5>
+                    </SeasonHeader>
+                    <Seasons seasonView={seasonView}>
+                      {result.seasons?.length > 0 &&
+                        result.seasons.map((season) => (
+                          <SeasonContent seasonView={seasonView}>
+                            <Season key={season.id} seasonView={seasonView}>
+                              <img
+                                src={
+                                  season.poster_path
+                                    ? `https://image.tmdb.org/t/p/w500${season.poster_path}`
+                                    : require('../../assets/noPoster.png')
+                                        .default
+                                }
+                                alt={`${season.name} poster`}
+                              />
+                            </Season>
+                            <SeasonName>{season.name}</SeasonName>
+                          </SeasonContent>
+                        ))}
+                    </Seasons>
+                  </SeasonContainer>
+                )}
               </MoreInfo>
             </Data>
           </Content>
