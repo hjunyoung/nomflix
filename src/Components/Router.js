@@ -14,7 +14,7 @@ import Collection from 'Routes/Collection';
 
 const RouterComponent = () => {
   return (
-    <Router>
+    <Router basename="https://peaceful-jennings-abd301.netlify.app/">
       <Header />
       <Switch>
         <Route path="/" component={Home} exact />
