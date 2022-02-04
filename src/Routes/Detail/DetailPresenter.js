@@ -146,7 +146,9 @@ const Name = styled.span`
   position: absolute;
 `;
 
-const TrailerName = styled(Name)``;
+const TrailerName = styled(Name)`
+  pointer-events: none;
+`;
 
 const Trailer = styled.div`
   height: ${(props) => (props.trailerView ? '153px' : 0)};
@@ -202,7 +204,7 @@ const CollectionContainer = styled(ContainerStyle)``;
 
 const CollectionHeader = styled(Header)`
   span {
-    transform: ${(props) => props.collectionview && 'rotate(90deg)'};
+    transform: ${(props) => props.collectionView && 'rotate(90deg)'};
   }
 `;
 
@@ -218,7 +220,7 @@ const CollectionName = styled(Name)`
 `;
 
 const Collection = styled.div`
-  height: ${(props) => (props.collectionview ? '300px' : 0)};
+  height: ${(props) => (props.collectionView ? '300px' : 0)};
   width: 200px;
   transition: height 0.05s linear;
   border-radius: 5px;
@@ -238,7 +240,7 @@ const CollectionContent = styled(Link)`
     }
   }
   &:hover + ${CollectionName} {
-    font-size: ${(props) => (props.collectionview ? '200px' : 0)};
+    font-size: ${(props) => (props.collectionView ? '200px' : 0)};
     transform: translate(-10%, calc(45vh - 100%));
     opacity: 0.25;
   }
@@ -338,7 +340,7 @@ const DetailPresenter = ({
   loading,
   trailerView,
   toggleView,
-  collectionview,
+  collectionView,
   seasonView,
   creatorView,
 }) => {
@@ -472,17 +474,17 @@ const DetailPresenter = ({
                   <CollectionContainer>
                     <CollectionHeader
                       onClick={toggleView}
-                      collectionview={collectionview}
+                      collectionView={collectionView}
                     >
                       <span>▶</span>
                       <h5>Collection</h5>
                     </CollectionHeader>
                     <CollectionContent
                       to={`/collection/${result.belongs_to_collection.id}`}
-                      collectionview={collectionview}
+                      collectionView={collectionView}
                     >
                       <Collection
-                        collectionview={collectionview}
+                        collectionView={collectionView}
                         bgUrl={
                           result.belongs_to_collection.poster_path
                             ? `https://image.tmdb.org/t/p/w500${result.belongs_to_collection.poster_path}`
@@ -587,7 +589,7 @@ DetailPresenter.propTypes = {
   loading: PropTypes.bool.isRequired,
   toggleView: PropTypes.func.isRequired,
   trailerView: PropTypes.bool.isRequired,
-  collectionview: PropTypes.bool.isRequired,
+  collectionView: PropTypes.bool.isRequired,
   seasonView: PropTypes.bool.isRequired,
   creatorView: PropTypes.bool.isRequired,
 };

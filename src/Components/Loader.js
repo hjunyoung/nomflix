@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Containter = styled.div`
+const Container = styled.div`
   height: 100%;
   width: 100%;
   display: flex;
@@ -12,11 +12,11 @@ const Containter = styled.div`
 
 const Loader = () => {
   return (
-    <Containter>
+    <Container>
       <span role="img" aria-label="Loading">
         ⏰
       </span>
-    </Containter>
+    </Container>
   );
 };
 

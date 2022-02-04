@@ -12,7 +12,7 @@ const Image = styled.div`
   height: 180px;
   background-size: cover;
   border-radius: 4px;
-  transition: opacity 0.15s linear;
+  transition: filter 0.15s linear;
 `;
 
 const Rating = styled.span`
@@ -20,7 +20,7 @@ const Rating = styled.span`
   right: 5px;
   position: absolute;
   opacity: 0;
-  transition: filter 0.15s linear;
+  transition: opacity 0.15s linear;
 `;
 
 const Title = styled.span`
